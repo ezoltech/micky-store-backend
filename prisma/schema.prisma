@@ -11,17 +11,18 @@ datasource db {
 }
 
 model Advert {
-  id          String     @id @default(auto()) @map("_id") @db.ObjectId
-  advertName String
-  productName String
-  Spec       String
-  userId     String
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  advertId    String      @db.ObjectId
+  advertName  String
+  productName  String
+  Spec        String
+  userId      String
   TelegramLink String
-  price        String
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
- }
-
+  price       String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime?
+  // images      AdvertImages[] @relation(fields: [])
+}
  model Billboard {
    id         String    @id @default(auto()) @map("_id") @db.ObjectId
    label      String
@@ -36,5 +37,24 @@ model Advert {
    Email      String
    passWord   String
    profilePhoto String
-
+  Bio           String
+  images      String
  }
+
+ model SoicalLinks{
+   id         String    @id @default(auto()) @map("_id") @db.ObjectId
+   SoicalLink_01  String
+   SoicalLink_02  String
+   SoicalLink_03  String
+ }
+
+model AdvertImages {
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  imageUrl_01 String
+  imageUrl_02 String
+  imageUrl_03 String
+  imageUrl_04 String
+  imageUrl_05 String
+  imageUrl_06 String
+  // advert      Advert[]      @relation(fields: [advertId], references: [id])
+}

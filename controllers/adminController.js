@@ -152,7 +152,8 @@ adminController.deleteProfile = async (req, res) => {
       data: {
         UserName,
         Email,
-        password: pwd,
+        password,
+        Bio,
         profilepictureurl: profilePhoto,
       },
     });

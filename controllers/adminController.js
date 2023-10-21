@@ -5,9 +5,9 @@ const prisma = new PrismaClient();
 const adminController = {};
 
 adminController.signUp = async (req, res) => {
-  const { UserName, Email, password, profilePhoto, Bio } = req.body;
-
-  if (!UserName || !Email || !password || !profilePhoto || !Bio) {
+  const { user_name, email, password, profile_photo, bio, images } = req.body;
+  console.log(req.body);
+  if (!user_name || !email || !password || !profile_photo || !bio || !images) {
     return res.status(401).send({
       status: 401,
       message: "Please enter all fields!!",
@@ -15,9 +15,9 @@ adminController.signUp = async (req, res) => {
   }
 
   try {
-    const n = await prisma.admin({
+    const n = await prisma.admin.count({
       where: {
-        Email,
+        email,
       },
     });
 
@@ -35,9 +35,12 @@ adminController.signUp = async (req, res) => {
 
       const newAdmin = await prisma.admin.create({
         data: {
-          UserName,
-          Email,
+          user_name,
+          email,
           password: pwd,
+          profile_photo,
+          bio,
+          images,
         },
       });
 
@@ -49,6 +52,7 @@ adminController.signUp = async (req, res) => {
         token,
         admin: newAdmin,
       });
+      console.log("admin created successfully : )");
     }
   } catch (error) {
     console.log(error);
@@ -60,9 +64,9 @@ adminController.signUp = async (req, res) => {
 };
 
 adminController.logIn = async (req, res) => {
-  const { Email, password } = req.body;
+  const { email, password } = req.body;
 
-  if (!Email || !password) {
+  if (!email || !password) {
     return res.status(401).send({
       status: 401,
       message: "Please enter all fields!",
@@ -71,13 +75,13 @@ adminController.logIn = async (req, res) => {
   try {
     const admin = await prisma.admin.findFirst({
       where: {
-        Email,
+        email,
       },
     });
 
     //decrypt password and compare with the one sent from body
     if (admin) {
-      const isMatch = bcrypt.compareSync(password, admin.passWord);
+      const isMatch = bcrypt.compareSync(password, admin.password);
 
       if (isMatch) {
         const token = jwt.sign(admin[0], process.env.JWT_SECRET, {

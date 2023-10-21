@@ -16,4 +16,6 @@ router.put("/admins/edit", adminController.editProfile);
 //admin delete requests
 router.delete("/admins/id/:id", adminController.deleteProfile);
 
+//advert post requests
+
 module.exports = router;

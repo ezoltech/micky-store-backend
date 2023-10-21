@@ -11,50 +11,51 @@ datasource db {
 }
 
 model Advert {
-  id          String      @id @default(auto()) @map("_id") @db.ObjectId
-  advertId    String      @db.ObjectId
-  advertName  String
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  advertId     String        @db.ObjectId
+  advertName   String
   productName  String
-  Spec        String
-  userId      String
+  Spec         String
+  userId       String
   TelegramLink String
-  price       String
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime?
-  // images      AdvertImages[] @relation(fields: [])
+  price        String
+  images       AdvertImages?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime?
 }
- model Billboard {
-   id         String    @id @default(auto()) @map("_id") @db.ObjectId
-   label      String
-   imageUrl   String
-   createdAt  DateTime  @default(now())
-   updatedAt  DateTime  @updatedAt
- }
 
- model Admin {
-   id         String    @id @default(auto()) @map("_id") @db.ObjectId
-   userName   String
-   Email      String
-   passWord   String
-   profilePhoto String
-  Bio           String
-  images      String
- }
+model Billboard {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  label     String
+  imageUrl  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
 
- model SoicalLinks{
-   id         String    @id @default(auto()) @map("_id") @db.ObjectId
-   SoicalLink_01  String
-   SoicalLink_02  String
-   SoicalLink_03  String
- }
+model Admin {
+  id            String @id @default(auto()) @map("_id") @db.ObjectId
+  user_name     String
+  email         String
+  password      String
+  profile_photo String
+  bio           String
+}
+
+model SoicalLinks {
+  id            String @id @default(auto()) @map("_id") @db.ObjectId
+  SoicalLink_01 String
+  SoicalLink_02 String
+  SoicalLink_03 String
+}
 
 model AdvertImages {
-  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
   imageUrl_01 String
   imageUrl_02 String
   imageUrl_03 String
   imageUrl_04 String
   imageUrl_05 String
   imageUrl_06 String
-  // advert      Advert[]      @relation(fields: [advertId], references: [id])
+  advert      Advert? @relation(fields: [advertId], references: [id])
+  advertId    String  @unique @db.ObjectId
 }
